@@ -1,23 +1,110 @@
-// 1. เรียกใชงาน Module ที่ชื่อวา 'http' ซึ่งเปนระบบพื้นฐานของ Node.js สําหรับทําเซิรฟ เวอร
- const http = require('http');
+// 1. เรียกใช้งาน Module ที่ชื่อว่า 'http'
+const http = require('http');
 
- // 2. กําหนดชองทาง (Port) ที่เซิรฟเวอรจะใชสื่อสาร โดยใหใชของที่ Cloud กําหนดมา(process.env.PORT) ถาไมมีใหใช 3000
- const port = process.env.PORT || 3000;
+// 2. กำหนด Port
+const port = process.env.PORT || 3000;
 
- // 3. สรางเครื่องแมขาย (Server) ที่คอยรับคําขอ (req) และตอบกลับ (res)
- const server = http.createServer((req, res) => {
+// 3. สร้าง Server
+const server = http.createServer((req, res) => {
 
- // 3.1 ตั้งรหัสสถานะ 200 หมายถึง "ทํางานสําเร็จ (OK)"
- res.statusCode = 200;
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
 
- // 3.2 บอกเบราวเซอรของผูใชวา สิ่งที่สงกลับไปคือไฟลขอความแบบ HTML และรองรับภาษาไทย (utf-8)
- res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.end(`
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>My Web Server</title>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            font-family:'Tahoma',sans-serif;
+            background:linear-gradient(135deg,#ffd6e8,#ffeef5);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
 
-// 3.3 สงขอมูลหนาเว็บกลับไปหาผูใช (*** ใหนักศึกษาแกชื่อ-นามสกุลตรงนี้ ***)
-res.end('<h1>สวัสดีครับ! นี่คือ Web Server ของ นางสาว ภัทรธิดา ผางไธสง  รหัสนักศึกษา 69319011689 </h1><p>เครื่องแม่ข่ายทํางานปกติบนระบบ Railway แล้วค่ะ!</p>');
- });
+        .card{
+            background:#fff;
+            width:500px;
+            padding:40px;
+            border-radius:25px;
+            text-align:center;
+            box-shadow:0 10px 25px rgba(255,105,180,.3);
+            border:4px solid #ffb6d5;
+        }
 
- // 4. สั่งใหเซิรฟเวอรเริ่มตนเปดรับฟงการเชื่อมตอตาม Port ที่กําหนดไว
- server.listen(port, () => {
- console.log(`Server is running! เครื่องแม่ข่ายเปิดทํางานแล้วที่ช่องทาง: ${port}`);
- });
+        h1{
+            color:#ff4f9a;
+            font-size:32px;
+            margin-bottom:15px;
+        }
+
+        h2{
+            color:#ff69b4;
+            margin-bottom:10px;
+        }
+
+        p{
+            color:#666;
+            font-size:18px;
+            line-height:1.8;
+        }
+
+        .heart{
+            font-size:45px;
+            animation:beat 1s infinite;
+        }
+
+        @keyframes beat{
+            0%{transform:scale(1);}
+            50%{transform:scale(1.2);}
+            100%{transform:scale(1);}
+        }
+
+        .footer{
+            margin-top:25px;
+            color:#ff69b4;
+            font-weight:bold;
+            font-size:16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="heart">💖</div>
+
+    <h1>Welcome to My Web Server</h1>
+
+    <h2>สวัสดีค่ะ 👋</h2>
+
+    <p>
+        <b>นางสาว ภัทรธิดา ผางไธสง</b><br>
+        รหัสนักศึกษา <b>69319011689</b>
+    </p>
+
+    <p>
+        เครื่องแม่ข่ายทำงานปกติบนระบบ Railway แล้วค่ะ 🚄✨
+    </p>
+
+    <div class="footer">
+        🌸 Have a Nice Day 🌸
+    </div>
+
+</div>
+
+</body>
+</html>
+`);
+});
+
+// 4. เริ่มต้น Server
+server.listen(port, () => {
+    console.log(`Server is running! เครื่องแม่ข่ายเปิดทำงานแล้วที่ช่องทาง: ${port}`);
+});ห
