@@ -1,101 +1,71 @@
-// 1. เรียกใช้งาน Module ที่ชื่อว่า 'http'
 const http = require('http');
 
-// 2. กำหนด Port
 const port = process.env.PORT || 3000;
 
-// 3. สร้าง Server
 const server = http.createServer((req, res) => {
-
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
 
     res.end(`
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <title>My Web Server</title>
-    <style>
-        body{
-            margin:0;
-            padding:0;
-            font-family:'Tahoma',sans-serif;
-            background:linear-gradient(135deg,#ffd6e8,#ffeef5);
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
+<meta charset="UTF-8">
+<title>My Web Server</title>
 
-        .card{
-            background:#fff;
-            width:500px;
-            padding:40px;
-            border-radius:25px;
-            text-align:center;
-            box-shadow:0 10px 25px rgba(255,105,180,.3);
-            border:4px solid #ffb6d5;
-        }
+<style>
+body{
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:linear-gradient(135deg,#ffd6e7,#ffeef7);
+    font-family:Tahoma,sans-serif;
+}
 
-        h1{
-            color:#ff4f9a;
-            font-size:32px;
-            margin-bottom:15px;
-        }
+.card{
+    background:white;
+    padding:40px;
+    width:500px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(255,105,180,.3);
+}
 
-        h2{
-            color:#ff69b4;
-            margin-bottom:10px;
-        }
+h1{
+    color:#ff4f9a;
+}
 
-        p{
-            color:#666;
-            font-size:18px;
-            line-height:1.8;
-        }
+h2{
+    color:#ff69b4;
+}
 
-        .heart{
-            font-size:45px;
-            animation:beat 1s infinite;
-        }
+p{
+    color:#555;
+    font-size:18px;
+}
 
-        @keyframes beat{
-            0%{transform:scale(1);}
-            50%{transform:scale(1.2);}
-            100%{transform:scale(1);}
-        }
+.heart{
+    font-size:50px;
+}
+</style>
 
-        .footer{
-            margin-top:25px;
-            color:#ff69b4;
-            font-weight:bold;
-            font-size:16px;
-        }
-    </style>
 </head>
 
 <body>
 
 <div class="card">
-    <div class="heart">💖</div>
+<div class="heart">💖</div>
 
-    <h1>Welcome to My Web Server</h1>
+<h1>Welcome</h1>
 
-    <h2>สวัสดีค่ะ 👋</h2>
+<h2>สวัสดีค่ะ</h2>
 
-    <p>
-        <b>นางสาว ภัทรธิดา ผางไธสง</b><br>
-        รหัสนักศึกษา <b>69319011689</b>
-    </p>
+<p><b>นางสาว ภัทรธิดา ผางไธสง</b></p>
 
-    <p>
-        เครื่องแม่ข่ายทำงานปกติบนระบบ Railway แล้วค่ะ 🚄✨
-    </p>
+<p>รหัสนักศึกษา 69319011689</p>
 
-    <div class="footer">
-        🌸 Have a Nice Day 🌸
-    </div>
+<p>เครื่องแม่ข่ายทำงานปกติบนระบบ Railway แล้วค่ะ 🌸</p>
 
 </div>
 
@@ -104,7 +74,6 @@ const server = http.createServer((req, res) => {
 `);
 });
 
-// 4. เริ่มต้น Server
 server.listen(port, () => {
-    console.log(`Server is running! เครื่องแม่ข่ายเปิดทำงานแล้วที่ช่องทาง: ${port}`);
-});ห
+    console.log(`Server running on port ${port}`);
+});
