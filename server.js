@@ -1,79 +1,36 @@
 const http = require('http');
-
-const port = process.env.PORT || 3000;
-
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-
-    res.end(`
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<title>My Web Server</title>
-
-<style>
-body{
-    margin:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background:linear-gradient(135deg,#ffd6e7,#ffeef7);
-    font-family:Tahoma,sans-serif;
-}
-
-.card{
-    background:white;
-    padding:40px;
-    width:500px;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:0 0 20px rgba(255,105,180,.3);
-}
-
-h1{
-    color:#ff4f9a;
-}
-
-h2{
-    color:#ff69b4;
-}
-
-p{
-    color:#555;
-    font-size:18px;
-}
-
-.heart{
-    font-size:50px;
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="card">
-<div class="heart">💖</div>
-
-<h1>Welcome</h1>
-
-<h2>สวัสดีค่ะ</h2>
-
-<p><b>นางสาว ภัทรธิดา ผางไธสง</b></p>
-
-<p>รหัสนักศึกษา 69319011689</p>
-
-<p>เครื่องแม่ข่ายทำงานปกติบนระบบ Railway แล้วค่ะ 🌸</p>
-
-</div>
-
-</body>
-</html>
-`);
+// 1. เรียกใช้งาน Pool จากไลบรารี pg สําหรับจัดการการเชื่อมต่อฐานข้อมูล
+const { Pool } = require('pg');
+// 2. ตั้งค่าการเชื่อมต่อ โดยดึง URL มาจาก Environment Variable ของ Railway
+const pool = new Pool({
+connectionString: process.env.DATABASE_URL,
 });
+const port = process.env.PORT || 3000;
+const server = http.createServer(async (req, res) => {
+res.statusCode = 200;
+res.setHeader('Content-Type', 'text/html; charset=utf-8');
 
+try {
+// 3. ขอเชื่อมต่อและส่งคําสั่ง SQL ไปดึงข้อมูลจากตาราง students
+const client = await pool.connect();
+const result = await client.query('SELECT * FROM students');
+client.release(); // คนืการเชื่อมต่อเมื่อใช้งานเสร็จ
+// 4. นําข้อมูลที่ได้(result.rows) มาประกอบเปนตาราง HTML
+let html = `<h1>ฐานขข้อมูลนักศึกษา (ทดสอบการเชื่อมต่อ)</h1>`;
+html += `<table border="1" cellpadding="10">`;
+html += `<tr><th>69319011689</th><th>Phattharathids</th></tr>`;
+// วนลูปนําข้อมูลแต่ละแถวมาแสดง
+result.rows.forEach(row => {
+html += `<tr><td>${row.student_id}</td><td>${row.student_name}</td></tr>`;
+});
+html += `</table>`;
+res.end(html);
+} catch (err) {
+// กรณเีชื่อมต่อไม่ได้หรือเขียนชื่อตารางผิด
+console.error(err);
+res.end(`<h1>เกิดขอผิดพลาด!</h1><p>${err.message}</p>`);
+}
+});
 server.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+console.log(`Server is running on port: ${port}`);
 });
