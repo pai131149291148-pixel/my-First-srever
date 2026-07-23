@@ -15,10 +15,10 @@ try {
 const client = await pool.connect();
 const result = await client.query('SELECT * FROM students');
 client.release(); // คนืการเชื่อมต่อเมื่อใช้งานเสร็จ
-// 4. นําข้อมูลที่ได้(result.rows) มาประกอบเปนตาราง HTML
+// 4. นําข้อมูลที่ได้(result.rows) มาประกอบเป็นตาราง HTML
 let html = `<h1>ฐานขข้อมูลนักศึกษา (ทดสอบการเชื่อมต่อ)</h1>`;
 html += `<table border="1" cellpadding="10">`;
-html += `<tr><th>69319011689</th><th>Phattharathids</th></tr>`;
+html += `<tr><th>69319011689</th><th>ภัทรธิดา ผางไธสง</th></tr>`;
 // วนลูปนําข้อมูลแต่ละแถวมาแสดง
 result.rows.forEach(row => {
 html += `<tr><td>${row.student_id}</td><td>${row.student_name}</td></tr>`;
